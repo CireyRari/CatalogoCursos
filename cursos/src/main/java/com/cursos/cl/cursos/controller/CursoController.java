@@ -1,4 +1,4 @@
-package com.cursos.cl.cursos.controller;
+package com.cursos.cl.cursos.controller; 
 
 import com.cursos.cl.cursos.model.Curso;
 import com.cursos.cl.cursos.service.CursoService;
@@ -12,33 +12,33 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController //Define la clase como controlador REST
 @RequestMapping("/api/cursos")
 public class CursoController {
 
     @Autowired
     private CursoService cursoService;
 
-    @GetMapping //obtener todos los cursos
+    @GetMapping // Endpoint: GET /api/cursos, para obtener los cursos
     public List<Curso> listarCursos() {
-        return cursoService.getCursos();
+        return cursoService.getCursos(); // Retorna todos los cursos registrados
     }
 
-    @PostMapping
+    @PostMapping // Endpoint: POST /api/cursos, para publicar un curso
     public ResponseEntity<?> agregarCurso(@Validated @RequestBody Curso curso, BindingResult result) {
-        if (result.hasErrors()) {
+        if (result.hasErrors()) {     // Valida la entrada usando anotaciones como @NotEmpty
             return ResponseEntity.badRequest().body("Body incompleto o inválido");
         }
-        cursoService.saveCurso(curso);
+        cursoService.saveCurso(curso); // Guarda el nuevo curso
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(true);
+                .body(true); // 201 Created
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{id}") // Endpoint: GET /api/cursos/{id}
     public ResponseEntity<?> buscarCurso(@PathVariable Long id) {
         try {
-            Curso curso = cursoService.getCursoById(id);
+            Curso curso = cursoService.getCursoById(id); // Lanza 404 si no existe
             return ResponseEntity.ok(curso);
         } catch (RuntimeException e) {
             return ResponseEntity
@@ -59,11 +59,11 @@ public class CursoController {
         }
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{id}") //Endpoint: DELETE /api/cursos/{id}
     public ResponseEntity<?> eliminarCurso(@PathVariable Long id) {
         boolean eliminado = cursoService.deleteCurso(id);
         if (eliminado) {
-            return ResponseEntity.ok(true);
+            return ResponseEntity.ok(true); // Retorna true si se elimina correctamente
         } else {
             return ResponseEntity
                     .status(HttpStatus.NOT_FOUND)
