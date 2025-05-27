@@ -7,20 +7,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
-@Entity
-@Data
+@Entity // Marca esta clase como entidad JPA
+@Data // Lombok: genera getters, setters, toString, etc.
 @AllArgsConstructor
 @NoArgsConstructor
 
 public class Curso {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Autoincremental
     private Long id;
 
-    @NotEmpty
+    @NotEmpty (message = "Body incompleto o inválido")
     private String nombre;
-    @NotEmpty
+    @NotEmpty (message = "Body incompleto o inválido")
     private String descripcion;
-    @NotNull
+    @NotNull (message = "Body incompleto o inválido")
     private Integer duracion; //en horas
 }
